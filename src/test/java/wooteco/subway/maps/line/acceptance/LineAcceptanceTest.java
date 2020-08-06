@@ -15,7 +15,7 @@ public class LineAcceptanceTest extends AcceptanceTest {
     @Test
     void createLine() {
         // when
-        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_생성_요청("신분당선", "RED");
+        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_생성_요청("신분당선", "RED", "900");
 
         // then
         LineAcceptanceStep.지하철_노선_생성됨(response);
@@ -25,10 +25,10 @@ public class LineAcceptanceTest extends AcceptanceTest {
     @Test
     void createLine2() {
         // given
-        LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "bg-red-600");
+        LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "bg-red-600", "900");
 
         // when
-        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_생성_요청("신분당선", "RED");
+        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_생성_요청("신분당선", "RED", "900");
 
         // then
         LineAcceptanceStep.지하철_노선_생성_실패됨(response);
@@ -38,8 +38,8 @@ public class LineAcceptanceTest extends AcceptanceTest {
     @Test
     void getLines() {
         // given
-        ExtractableResponse<Response> createResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED");
-        ExtractableResponse<Response> createResponse2 = LineAcceptanceStep.지하철_노선_등록되어_있음("2호선", "GREEN");
+        ExtractableResponse<Response> createResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED", "900");
+        ExtractableResponse<Response> createResponse2 = LineAcceptanceStep.지하철_노선_등록되어_있음("2호선", "GREEN", "0");
 
         // when
         ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_목록_조회_요청();
@@ -53,7 +53,7 @@ public class LineAcceptanceTest extends AcceptanceTest {
     @Test
     void getLine() {
         // given
-        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED");
+        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED", "900");
 
         // when
         ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_조회_요청(createResponse);
@@ -67,10 +67,10 @@ public class LineAcceptanceTest extends AcceptanceTest {
     void updateLine() {
         // given
         String name = "신분당선";
-        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음(name, "RED");
+        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음(name, "RED", "900");
 
         // when
-        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_수정_요청(createResponse, "구분당선", "BLUE");
+        ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_수정_요청(createResponse, "구분당선", "BLUE", "0");
 
         // then
         LineAcceptanceStep.지하철_노선_수정됨(response);
@@ -80,7 +80,7 @@ public class LineAcceptanceTest extends AcceptanceTest {
     @Test
     void deleteLine() {
         // given
-        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED");
+        ExtractableResponse<Response> createResponse = LineAcceptanceStep.지하철_노선_등록되어_있음("신분당선", "RED", "900");
 
         // when
         ExtractableResponse<Response> response = LineAcceptanceStep.지하철_노선_제거_요청(createResponse);

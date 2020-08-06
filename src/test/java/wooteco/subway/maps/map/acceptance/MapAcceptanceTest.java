@@ -48,9 +48,9 @@ public class MapAcceptanceTest extends AcceptanceTest {
         양재역 = 지하철역_등록되어_있음("양재역");
         남부터미널역 = 지하철역_등록되어_있음("남부터미널역");
 
-        이호선 = 지하철_노선_등록되어_있음("2호선", "GREEN");
-        신분당선 = 지하철_노선_등록되어_있음("신분당선", "RED");
-        삼호선 = 지하철_노선_등록되어_있음("3호선", "ORANGE");
+        이호선 = 지하철_노선_등록되어_있음("2호선", "GREEN", "0");
+        신분당선 = 지하철_노선_등록되어_있음("신분당선", "RED", "900");
+        삼호선 = 지하철_노선_등록되어_있음("3호선", "ORANGE", "500");
 
         지하철_노선에_지하철역_등록되어_있음(이호선, null, 교대역, 0, 0);
         지하철_노선에_지하철역_등록되어_있음(이호선, 교대역, 강남역, 2, 2);
@@ -94,8 +94,8 @@ public class MapAcceptanceTest extends AcceptanceTest {
                 extract();
     }
 
-    private Long 지하철_노선_등록되어_있음(String name, String color) {
-        ExtractableResponse<Response> createLineResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음(name, color);
+    private Long 지하철_노선_등록되어_있음(String name, String color, String extraFare) {
+        ExtractableResponse<Response> createLineResponse1 = LineAcceptanceStep.지하철_노선_등록되어_있음(name, color, extraFare);
         return createLineResponse1.as(LineResponse.class).getId();
     }
 
