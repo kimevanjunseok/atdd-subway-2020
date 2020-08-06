@@ -58,7 +58,7 @@ public class PathDocumentation extends Documentation {
         Long target  = 3L;
         PathType type = PathType.DISTANCE;
 
-        when(mapService.findPath(any(), any(), any())).thenReturn(pathResponse);
+        when(mapService.findPath(any(), any(), any(), any())).thenReturn(pathResponse);
 
         given().log().all().
                 header("Authorization", "Bearer " + tokenResponse.getAccessToken()).
