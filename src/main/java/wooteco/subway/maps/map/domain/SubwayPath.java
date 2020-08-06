@@ -32,4 +32,14 @@ public class SubwayPath {
     public int calculateDistance() {
         return lineStationEdges.stream().mapToInt(it -> it.getLineStation().getDistance()).sum();
     }
+
+    public int calculateOverFare(int overDistance) {
+        if (overDistance <= 0) {
+            return 0;
+        }
+        if (overDistance <= 40) {
+            return (((overDistance - 1) / 5) + 1) * 100;
+        }
+        return ((((overDistance - 41) / 8) + 1) * 100 + 800);
+    }
 }
