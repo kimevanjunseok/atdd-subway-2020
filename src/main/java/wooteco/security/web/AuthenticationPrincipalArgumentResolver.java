@@ -8,6 +8,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.security.core.Authentication;
 import wooteco.security.core.AuthenticationPrincipal;
 import wooteco.security.core.context.SecurityContextHolder;
+import wooteco.subway.maps.map.annotation.RequiredPath;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -20,7 +21,13 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        boolean isPath = parameter.hasMethodAnnotation(RequiredPath.class);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (isPath) {
+            if (authentication == null) {
+                return null;
+            }
+        }
         if (authentication == null) {
             throw new AuthorizationException();
         }

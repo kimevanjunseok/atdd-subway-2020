@@ -7,6 +7,7 @@ import wooteco.security.core.Authentication;
 import wooteco.security.web.authentication.handler.AuthenticationFailureHandler;
 import wooteco.security.web.authentication.handler.AuthenticationSuccessHandler;
 import wooteco.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
