@@ -27,14 +27,8 @@ public class MapController {
                                                     @RequestParam Long source,
                                                     @RequestParam Long target,
                                                     @RequestParam PathType type) {
-        return ResponseEntity.ok(mapService.findPath(source, target, type));
+        return ResponseEntity.ok(mapService.findPath(loginMember, source, target, type));
     }
-
-    // @GetMapping("/paths")
-    // public ResponseEntity<PathResponse> findPath(@RequestParam Long source, @RequestParam Long target,
-    //                                                  @RequestParam PathType type) {
-    //     return ResponseEntity.ok(mapService.findPath(source, target, type));
-    // }
 
     @GetMapping("/maps")
     public ResponseEntity<MapResponse> findMap() {

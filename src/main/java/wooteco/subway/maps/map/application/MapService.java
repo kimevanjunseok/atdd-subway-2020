@@ -6,6 +6,7 @@ import wooteco.subway.maps.line.domain.Line;
 import wooteco.subway.maps.line.domain.LineStation;
 import wooteco.subway.maps.line.dto.LineResponse;
 import wooteco.subway.maps.line.dto.LineStationResponse;
+import wooteco.subway.maps.map.domain.AgeType;
 import wooteco.subway.maps.map.domain.PathType;
 import wooteco.subway.maps.map.domain.SubwayPath;
 import wooteco.subway.maps.map.dto.MapResponse;
@@ -14,6 +15,8 @@ import wooteco.subway.maps.map.dto.PathResponseAssembler;
 import wooteco.subway.maps.station.application.StationService;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
+import wooteco.subway.members.member.domain.LoginMember;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +47,7 @@ public class MapService {
         return new MapResponse(lineResponses);
     }
 
-    public PathResponse findPath(Long source, Long target, PathType type) {
+    public PathResponse findPath(LoginMember loginMember, Long source, Long target, PathType type) {
         List<Line> lines = lineService.findLines();
         SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
         int OverFareByLine = subwayPath.getLineStationEdges().stream()
@@ -52,6 +55,11 @@ public class MapService {
                 .max()
                 .orElse(0);
         Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
+
+        if (loginMember != null) {
+            AgeType ageType = AgeType.find(loginMember.getAge());
+            OverFareByLine = ageType.apply(OverFareByLine);
+        }
 
         return PathResponseAssembler.assemble(subwayPath, stations, OverFareByLine);
     }
