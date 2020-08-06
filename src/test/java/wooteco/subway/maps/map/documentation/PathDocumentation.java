@@ -66,7 +66,7 @@ public class PathDocumentation extends Documentation {
                 get("/paths?source={source}&target={target}&type={type}", source, target, type).
                 then().
                 log().all().
-                apply(document("paths/find-path",
+                apply(document("paths/find",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestHeaders(
