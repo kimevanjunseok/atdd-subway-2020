@@ -3,6 +3,7 @@ package wooteco.subway.maps.map.application;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.subway.maps.line.application.LineService;
 import wooteco.subway.maps.line.domain.Line;
+import wooteco.subway.maps.line.domain.LineStation;
 import wooteco.subway.maps.line.dto.LineResponse;
 import wooteco.subway.maps.line.dto.LineStationResponse;
 import wooteco.subway.maps.map.domain.PathType;
@@ -46,15 +47,19 @@ public class MapService {
     public PathResponse findPath(Long source, Long target, PathType type) {
         List<Line> lines = lineService.findLines();
         SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
+        int OverFareByLine = subwayPath.getLineStationEdges().stream()
+                .mapToInt(lineStationEdge -> ofAdditionalFare(lines, lineStationEdge.getLineId()))
+                .max()
+                .orElse(0);
         Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
 
-        return PathResponseAssembler.assemble(subwayPath, stations);
+        return PathResponseAssembler.assemble(subwayPath, stations, OverFareByLine);
     }
 
     private Map<Long, Station> findStations(List<Line> lines) {
         List<Long> stationIds = lines.stream()
                 .flatMap(it -> it.getStationInOrder().stream())
-                .map(it -> it.getStationId())
+                .map(LineStation::getStationId)
                 .collect(Collectors.toList());
 
         return stationService.findStationsByIds(stationIds);
@@ -64,5 +69,13 @@ public class MapService {
         return line.getStationInOrder().stream()
                 .map(it -> LineStationResponse.of(line.getId(), it, StationResponse.of(stations.get(it.getStationId()))))
                 .collect(Collectors.toList());
+    }
+
+    private int ofAdditionalFare(List<Line> lines, Long id) {
+        return lines.stream()
+                .filter(line -> line.getId().equals(id))
+                .mapToInt(Line::getExtraFare)
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
     }
 }

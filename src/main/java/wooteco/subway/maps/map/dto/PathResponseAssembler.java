@@ -12,13 +12,13 @@ public class PathResponseAssembler {
 
     private static final int BASIC_RATE = 1250;
 
-    public static PathResponse assemble(SubwayPath subwayPath, Map<Long, Station> stations) {
+    public static PathResponse assemble(SubwayPath subwayPath, Map<Long, Station> stations, int OverFareByLine) {
         List<StationResponse> stationResponses = subwayPath.extractStationId().stream()
                 .map(it -> StationResponse.of(stations.get(it)))
                 .collect(Collectors.toList());
 
         int distance = subwayPath.calculateDistance();
-        int overFare = subwayPath.calculateOverFare(distance - 10);
+        int overFare = subwayPath.calculateOverFare(distance - 10) + OverFareByLine;
         return new PathResponse(stationResponses, subwayPath.calculateDuration(), distance, overFare + BASIC_RATE);
     }
 }
